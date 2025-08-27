@@ -1,0 +1,327 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  /* Removed gradient background for solid professional color */
+  background: #f8fffe;
+  color: #2c3e50;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Hero Section */
+.hero-section {
+  text-align: center;
+  padding: 3rem 0;
+  /* Removed gradient and shadow for clean professional look */
+  background: #20b2aa;
+  border-radius: 8px;
+  margin-bottom: 4rem;
+}
+
+.main-title {
+  font-size: 3rem;
+  /* Reduced font weight for more professional appearance */
+  font-weight: 600;
+  color: white;
+  /* Removed text shadow for cleaner look */
+  letter-spacing: 1px;
+}
+
+/* Learning Section */
+.learning-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  /* Reduced margin significantly to make learning section much less prominent */
+  margin-bottom: 1rem;
+}
+
+.learning-card {
+  background: white;
+  /* Further reduced padding to make cards much more compact */
+  padding: 1rem 0.75rem;
+  /* Reduced border radius for more professional appearance */
+  border-radius: 8px;
+  text-align: center;
+  /* Simplified shadow for professional look */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* Removed transform animation for serious appearance */
+  transition: box-shadow 0.2s ease;
+  border: 1px solid #e9ecef;
+}
+
+.learning-card:hover {
+  /* Removed transform animation, only subtle shadow change */
+  box-shadow: 0 4px 12px rgba(32, 178, 170, 0.15);
+}
+
+.card-icon {
+  /* Made icon even smaller for ultra-compact design */
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+.learning-card h2 {
+  /* Further reduced font size and removed margin for minimal height */
+  font-size: 1.2rem;
+  /* Reduced font weight for professional look */
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+  /* Reduced letter spacing for cleaner appearance */
+  letter-spacing: 0.5px;
+}
+
+.learning-card p {
+  color: #6c757d;
+  /* Minimized margin and made text smaller for compact design */
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.card-link {
+  display: inline-block;
+  /* Made button even smaller with reduced padding */
+  padding: 6px 16px;
+  background: #20b2aa;
+  color: white;
+  text-decoration: none;
+  /* Reduced border radius for professional button style */
+  border-radius: 4px;
+  font-weight: 600;
+  /* Smaller font size for ultra-compact button */
+  font-size: 0.8rem;
+  /* Simplified transition, removed scale animation */
+  transition: background-color 0.2s ease;
+}
+
+.card-link:hover:not(.disabled) {
+  background: #17a2b8;
+  /* Removed scale transform for professional interaction */
+}
+
+.card-link.disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
+
+/* Projects Section */
+.projects-section {
+  /* Increased margin to make projects section much more prominent */
+  margin-bottom: 5rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Reduced margin since learning section is now much smaller */
+  margin-bottom: 2.5rem;
+  gap: 1rem;
+}
+
+.section-icon {
+  font-size: 2.5rem;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  /* Reduced font weight for professional typography */
+  font-weight: 600;
+  color: #2c3e50;
+  /* Reduced letter spacing */
+  letter-spacing: 0.5px;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.project-card {
+  background: white;
+  padding: 2rem;
+  /* Reduced border radius for professional appearance */
+  border-radius: 8px;
+  /* Simplified shadow */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* Removed transform animation */
+  transition: box-shadow 0.2s ease;
+  border-left: 4px solid #20b2aa;
+}
+
+.project-card:hover {
+  /* Removed transform, only subtle shadow change */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.project-card h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.project-card p {
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+/* Added styling for project date */
+.project-date {
+  color: #20b2aa !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 1rem !important;
+}
+
+.project-link {
+  display: inline-block;
+  color: #20b2aa;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.project-link:hover {
+  color: #17a2b8;
+  text-decoration: underline;
+}
+
+/* Added styling for show more button */
+.show-more-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.show-more-btn {
+  background: #20b2aa;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  /* Reduced border radius for professional button style */
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  /* Simplified transition, removed transform animation */
+  transition: background-color 0.2s ease;
+  /* Simplified shadow */
+  box-shadow: 0 2px 8px rgba(32, 178, 170, 0.2);
+}
+
+.show-more-btn:hover {
+  background: #17a2b8;
+  /* Removed transform animation for professional interaction */
+}
+
+/* Social Section */
+.social-section {
+  margin-bottom: 2rem;
+}
+
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.social-card 
+{
+  background: white;
+  padding: 2rem;
+  text-decoration: none; 
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.social-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.qr-placeholder {
+  width: 120px;
+  height: 120px;
+  /* Removed gradient for solid professional background */
+  background: #f8f9fa;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.qr-placeholder img 
+{
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; 
+  display: block; 
+}
+
+.social-card p {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .main-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-section {
+    padding: 2rem 0;
+  }
+
+  .learning-section {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header h2 {
+    font-size: 2rem;
+  }
+
+  .learning-card {
+    /* Ultra-compact padding on mobile to minimize learning section height */
+    padding: 0.75rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-title {
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+
+  .hero-section {
+    padding: 2rem 0;
+  }
+
+  .social-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

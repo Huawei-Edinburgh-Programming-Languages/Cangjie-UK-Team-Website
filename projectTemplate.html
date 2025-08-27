@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Website</title>
+  <link rel="stylesheet" href="project-style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+</head>
+
+<body>
+  <header>
+    <button id="go-back-button">← Back</button>
+    <h1 id="project-name">Welcome to My Project</h1>
+  </header>
+
+  <main>
+    <div class="md-window">
+      <div id="blog-content">
+        <!-- Blog content will be loaded here -->
+        <div class="loading">Loading blog content...</div>
+      </div>
+    </div>
+    <div class="md-content-links">
+      <div class="project-info">
+        <div id="repo-link-container">
+          <a id ="repo-link" href="" target="_blank" rel="noopener noreferrer">
+                    📁 View Repository
+          </a>
+        </div>
+        <h3>Table of Contents</h3>
+        <div id="table-of-contents">
+          <!-- Table of contents will be generated here -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="authors-of-the-project">
+      <h4>Authors</h4>
+      <div id="authors-list">
+        <!-- Authors will be loaded here -->
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="distribiution/project-script.js"></script>
+  <script type="module" src="distribiution/tableOfContents.js"></script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#blog-content ul,
+#blog-content ol 
+{
+  margin-left: 1.5rem; 
+  padding-left: 1.5rem;  
+  margin-bottom: 1rem;  
+}
+
+#blog-content li 
+{
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: #20b2aa;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#go-back-button {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#go-back-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateX(-2px);
+}
+
+#project-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 95%;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.md-window {
+  flex: 2;
+  display: flex;        
+  flex-direction: column; 
+  max-width: 65%;
+}
+
+#blog-content {
+  flex: 1;             
+  min-height: 0;        
+  overflow-y: auto;
+  font-size: clamp(0.8rem, 1.2vw, 1.25rem);
+  padding: 2rem;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.md-content-links {
+  flex: 1;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+}
+
+.project-info h3 {
+  color: #20b2aa;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+#repo-link-container {
+  margin-bottom: 2rem;
+}
+
+#repo-link-container a {
+  display: inline-block;
+  background: #20b2aa;
+  color: white;
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+#repo-link-container a:hover {
+  background: #1a9a94;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(32, 178, 170, 0.4);
+}
+
+/* Table of contents styles */
+#table-of-contents {
+  margin-bottom: 2rem;
+}
+
+.toc-link {
+  display: block;
+  color: #4a5568;
+  text-decoration: none;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.toc-link:hover {
+  color: #20b2aa;
+  padding-left: 0.5rem;
+  background: #f7fafc;
+}
+
+.toc-level-1 {
+  font-weight: 600;
+  font-size: 1rem; 
+  margin-left: 0;
+}
+
+.toc-level-2 {
+  font-weight: 500;
+  font-size: 0.9rem; 
+  margin-left: 1rem; 
+}
+
+.toc-level-3 {
+  font-weight: 400;
+  font-size: 0.8rem;
+  margin-left: 2rem; 
+}
+
+.no-toc {
+  color: #a0aec0;
+  font-style: italic;
+  text-align: center;
+  padding: 1rem;
+}
+
+footer {
+  background: #2c3e50;
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.authors-of-the-project h4 {
+  margin-bottom: 1rem;
+  color: #e2e8f0;
+}
+
+#authors-list {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.author-tag {
+  background: #34495e;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+/* Blog content styling */
+#blog-content h1,
+#blog-content h2,
+#blog-content h3 {
+  margin: 1.5rem 0 1rem;
+  scroll-margin-top: 2rem;
+  color: #2d3748;
+}
+
+/* Specific overrides */
+#blog-content h1 {
+  font-size: 2rem;
+  border-bottom: 3px solid #20b2aa;
+  padding-bottom: 0.5rem;
+}
+
+#blog-content h2 {
+  font-size: 1.5rem;
+  color: #20b2aa;
+}
+
+#blog-content p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+/* Inline + block code styles */
+#blog-content code,
+#blog-content pre {
+  font-family: "Courier New", monospace;
+  border-radius: 5px;
+}
+
+#blog-content code {
+  background: transparent;
+  padding: 0.2rem 0.4rem;
+}
+
+#blog-content pre {
+  background: #f5f5f5;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1rem auto;
+  max-width: 100%;
+  white-space: pre;
+  border: 1px solid #e0e0e0;
+}
+
+/* Blockquotes */
+#blog-content blockquote {
+  border-left: 4px solid #20b2aa;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  font-style: italic;
+  color: #4a5568;
+}
+
+
+.error-message {
+  color: #e53e3e;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  main {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .md-content-links {
+    position: static;
+  }
+
+  header {
+    padding: 1rem;
+  }
+
+  #project-name {
+    font-size: 1.2rem;
+  }
+}

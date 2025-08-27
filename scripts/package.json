@@ -1,0 +1,18 @@
+{
+  "name": "preprocessing",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build-blogs": "node scripts/preProcessing.js"
+  },
+  "dependencies": {
+    "remark": "^14.0.2",
+    "remark-gfm": "^3.0.1",
+    "remark-rehype": "^10.1.0",
+    "rehype-raw": "^6.1.1",
+    "rehype-stringify": "^9.0.3",
+    "rehype-slug": "^5.0.0",
+    "shiki": "^0.12.0",
+    "unist-util-visit": "^4.1.0"
+  }
+}

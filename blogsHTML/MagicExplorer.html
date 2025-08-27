@@ -1,0 +1,327 @@
+<h1 id="magicexplorer-an-automated-browser-agent-system-with-cangjie">MagicExplorer: An Automated Browser Agent System with Cangjie</h1>
+<p>Magic Framework</p>
+<p>As interns at Huawei, we embarked on an ambitious journey to create
+MagicExplorer, an intelligent automated browser agent system that could
+navigate and interact with web applications autonomously. This project
+became a testament to iterative design, architectural evolution, and the
+powerful capabilities of Huawei's Cangjie Magic framework.</p>
+<h2 id="the-evolution-of-architecture-from-complexity-to-elegance">The Evolution of Architecture: From Complexity to Elegance</h2>
+<h3 id="phase-1-the-ffi-foundation">Phase 1: The FFI Foundation</h3>
+<p>Our initial approach leveraged Foreign Function Integration (FFI) to
+execute Python code from within our Cangjie environment. This allowed us
+to harness the robust Python Playwright package through carefully
+crafted wrapper functions. Playwright provided the essential DOM
+manipulation capabilities - clicking elements, scraping content, and
+basic navigation.</p>
+<p>The first iteration was remarkably simple: we would prompt our agent to
+identify which button to click, manually feed this information back to
+Playwright, and observe the results. While this proved the concept, the
+limitations were immediately apparent. The system lacked flexibility for
+dynamic actions like scrolling or adaptive navigation, creating a rigid
+interaction model that couldn't handle real-world web complexity.</p>
+<h3 id="phase-2-tool-based-single-agent">Phase 2: Tool-Based Single Agent</h3>
+<p>Recognizing these constraints, we evolved to a tool-based architecture
+where our Cangjie agent had direct access to click and navigation tools.
+This version represented a significant leap forward - we could prompt
+the system with a goal once and watch it autonomously navigate toward
+completion.</p>
+<p>However, new challenges emerged. The agent struggled with memory
+retention, often repeating previous actions in an endless loop,
+expecting different results. Goal verification became problematic, with
+the system unable to accurately determine task completion. Additionally,
+the FFI layer introduced significant performance bottlenecks, making the
+entire system frustratingly slow.</p>
+<h3 id="phase-3-multi-agent-architecture">Phase 3: Multi-Agent Architecture</h3>
+<p>Faced with these limitations, we returned to first principles. Our
+analysis revealed that overwhelming a single agent with multiple
+responsibilities was counterproductive. We designed a two-agent system:</p>
+<ul>
+<li>
+<p>The Planner: Responsible for breaking down goals into actionable steps</p>
+</li>
+<li>
+<p>The Executor: Focused on implementing the planner's instructions</p>
+</li>
+</ul>
+<p>Simultaneously, we made a crucial technological shift. We rewrote our
+Playwright functions in JavaScript and integrated them via Model Context
+Protocol (MCP). This is where Cangjie Magic truly began to shine - the
+framework provided seamless interaction capabilities with our JavaScript
+tools, dramatically improving performance and flexibility.</p>
+<h3 id="phase-4-the-vision-experiment">Phase 4: The Vision Experiment</h3>
+<p>Despite improvements, we encountered a fundamental problem: the planner
+lacked contextual awareness of the current webpage state. To address
+this, our team split into three groups, each exploring different
+architectural approaches:</p>
+<p>Vision-Only Approach: This system continuously captured browser
+screenshots, overlaying highlighted boxes around clickable elements with
+indexed labels. While innovative, dense websites created overlapping
+boxes and visual clutter that obscured important information, making
+this approach impractical as a primary solution.</p>
+<p>Enhanced Multi-Agent System: We refined the planner-executor
+communication protocols and attempted to provide contextual feedback.
+However, the fundamental context gap persisted, leading to execution
+failures and insufficient attention to goal achievement details.</p>
+<p>Single Agent with Memory: This approach would ultimately prove
+transformative.</p>
+<h2 id="the-breakthrough-single-agent-with-enhanced-memory">The Breakthrough: Single Agent with Enhanced Memory</h2>
+<p>Our final architecture represented a return to simplicity, but with
+sophisticated memory management. The single agent now maintained
+comprehensive memory of previous actions, enabling it to:</p>
+<ul>
+<li>
+<p>Understand previously attempted steps</p>
+</li>
+<li>
+<p>Identify completed objectives</p>
+</li>
+<li>
+<p>Make accurate decisions about goal achievement</p>
+</li>
+<li>
+<p>Avoid repetitive action loops</p>
+</li>
+</ul>
+<p>Memory manager which includes list of classes implementing interface Action.</p>
+<pre class="shiki light-plus" style="background-color: #FFFFFF"><code><span class="line"><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #AF00DB">class</span><span style="color: #267F99"> MemoryManager</span><span style="color: #000000"> &#x3C;: </span><span style="color: #267F99">ToString</span></span>
+<span class="line"><span style="color: #000000">{</span></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">var</span><span style="color: #001080"> stepsCompleted</span><span style="color: #000000">: </span><span style="color: #267F99">ArrayList</span><span style="color: #000000">&#x3C;</span><span style="color: #267F99">Action</span><span style="color: #000000">></span></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">var</span><span style="color: #001080"> manualMemory</span><span style="color: #000000">:  </span><span style="color: #267F99">String</span></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">var</span><span style="color: #001080"> end</span><span style="color: #000000">: </span><span style="color: #AF00DB">Int64</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #795E26">MemoryManager</span><span style="color: #000000">(){</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #001080">stepsCompleted</span><span style="color: #000000"> = </span><span style="color: #795E26">ArrayList</span><span style="color: #000000">&#x3C;</span><span style="color: #267F99">Action</span><span style="color: #000000">>([])</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #001080">manualMemory</span><span style="color: #000000"> = </span><span style="color: #A31515">""</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #001080">end</span><span style="color: #000000"> = </span><span style="color: #098658">0</span></span>
+<span class="line"><span style="color: #000000">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #AF00DB">func</span><span style="color: #795E26"> addClick</span><span style="color: #000000">(</span><span style="color: #001080">resultingUrl</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000">,</span><span style="color: #001080"> itemClicked</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000">,</span><span style="color: #001080"> inputText</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000">,</span><span style="color: #001080"> result</span><span style="color: #000000">: </span><span style="color: #AF00DB">Bool</span><span style="color: #000000">){</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #001080">stepsCompleted</span><span style="color: #000000">.</span><span style="color: #795E26">add</span><span style="color: #000000">(</span><span style="color: #795E26">Click</span><span style="color: #000000">(</span><span style="color: #001080">resultingUrl</span><span style="color: #000000">,</span><span style="color: #001080">itemClicked</span><span style="color: #000000">,</span><span style="color: #001080">inputText</span><span style="color: #000000">,</span><span style="color: #001080">result</span><span style="color: #000000">))</span></span>
+<span class="line"><span style="color: #000000">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #AF00DB">func</span><span style="color: #795E26"> addURLNavigator</span><span style="color: #000000">(</span><span style="color: #001080">resultingUrl</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000">){</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #001080">stepsCompleted</span><span style="color: #000000">.</span><span style="color: #795E26">add</span><span style="color: #000000">(</span><span style="color: #795E26">UrlNavigation</span><span style="color: #000000">(</span><span style="color: #001080">resultingUrl</span><span style="color: #000000">))</span></span>
+<span class="line"><span style="color: #000000">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #AF00DB">func</span><span style="color: #795E26"> addBack</span><span style="color: #000000">(</span><span style="color: #001080">resultingUrl</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000">){</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #001080">stepsCompleted</span><span style="color: #000000">.</span><span style="color: #795E26">add</span><span style="color: #000000">(</span><span style="color: #795E26">Back</span><span style="color: #000000">(</span><span style="color: #001080">resultingUrl</span><span style="color: #000000">))</span></span>
+<span class="line"><span style="color: #000000">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #AF00DB">func</span><span style="color: #795E26"> addFileUpload</span><span style="color: #000000">(</span><span style="color: #001080">nameOfTheFileUploaded</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000">){</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #001080">stepsCompleted</span><span style="color: #000000">.</span><span style="color: #795E26">add</span><span style="color: #000000">(</span><span style="color: #795E26">FileUpload</span><span style="color: #000000">(</span><span style="color: #001080">nameOfTheFileUploaded</span><span style="color: #000000">))</span></span>
+<span class="line"><span style="color: #000000">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #AF00DB">func</span><span style="color: #795E26"> addExtraAgent</span><span style="color: #000000">(</span><span style="color: #001080">subGoal</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000">,</span><span style="color: #001080"> executionResult</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000">){</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #001080">stepsCompleted</span><span style="color: #000000">.</span><span style="color: #795E26">add</span><span style="color: #000000">(</span><span style="color: #795E26">ExtraAgent</span><span style="color: #000000">(</span><span style="color: #001080">subGoal</span><span style="color: #000000">, </span><span style="color: #001080">executionResult</span><span style="color: #000000">))</span></span>
+<span class="line"><span style="color: #000000">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #AF00DB">func</span><span style="color: #795E26"> addScreenshotterCall</span><span style="color: #000000">(</span><span style="color: #001080">response</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000">){</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #001080">stepsCompleted</span><span style="color: #000000">.</span><span style="color: #795E26">add</span><span style="color: #000000">(</span><span style="color: #795E26">ScreenshotterCall</span><span style="color: #000000">(</span><span style="color: #001080">response</span><span style="color: #000000">))</span></span>
+<span class="line"><span style="color: #000000">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #AF00DB">func</span><span style="color: #795E26"> addCaptchaInteruption</span><span style="color: #000000">(){</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #001080">stepsCompleted</span><span style="color: #000000">.</span><span style="color: #795E26">add</span><span style="color: #000000">(</span><span style="color: #795E26">CaptchaInteruption</span><span style="color: #000000">())</span></span>
+<span class="line"><span style="color: #000000">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #AF00DB">func</span><span style="color: #795E26"> toString</span><span style="color: #000000">(): </span><span style="color: #267F99">String</span><span style="color: #000000">{</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #AF00DB">var</span><span style="color: #001080"> out</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000"> = </span><span style="color: #A31515">"List of previous completed steps: </span><span style="color: #EE0000">\n</span><span style="color: #A31515"> "</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #AF00DB">for</span><span style="color: #000000">(</span><span style="color: #001080">ind</span><span style="color: #000000"> </span><span style="color: #AF00DB">in</span><span style="color: #000000"> </span><span style="color: #795E26">Range</span><span style="color: #000000">(</span><span style="color: #001080">end</span><span style="color: #000000"> ,</span><span style="color: #AF00DB">Int64</span><span style="color: #000000">(</span><span style="color: #001080">stepsCompleted</span><span style="color: #000000">.</span><span style="color: #001080">size</span><span style="color: #000000">-</span><span style="color: #098658">1</span><span style="color: #000000">),</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #AF00DB">true</span><span style="color: #000000">,</span><span style="color: #AF00DB">true</span><span style="color: #000000">,</span><span style="color: #AF00DB">true</span><span style="color: #000000">)){</span></span>
+<span class="line"><span style="color: #000000">            </span><span style="color: #AF00DB">let</span><span style="color: #001080"> action</span><span style="color: #000000"> = </span><span style="color: #001080">stepsCompleted</span><span style="color: #000000">[</span><span style="color: #001080">ind</span><span style="color: #000000">]</span></span>
+<span class="line"><span style="color: #000000">            </span><span style="color: #001080">manualMemory</span><span style="color: #000000"> += </span><span style="color: #A31515">"Operation number </span><span style="color: #000000">${</span><span style="color: #001080">ind</span><span style="color: #000000">}</span><span style="color: #A31515">: </span><span style="color: #000000">${</span><span style="color: #001080">action</span><span style="color: #000000">}</span><span style="color: #EE0000">\n</span><span style="color: #A31515">"</span></span>
+<span class="line"><span style="color: #000000">        }</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #001080">end</span><span style="color: #000000"> = </span><span style="color: #001080">stepsCompleted</span><span style="color: #000000">.</span><span style="color: #001080">size</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #A31515">"List of previous completed steps: </span><span style="color: #EE0000">\n</span><span style="color: #A31515"> </span><span style="color: #000000">${</span><span style="color: #001080">manualMemory</span><span style="color: #000000">}</span><span style="color: #A31515">"</span></span>
+<span class="line"><span style="color: #000000">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #AF00DB">func</span><span style="color: #795E26"> back</span><span style="color: #000000">(): </span><span style="color: #267F99">String</span><span style="color: #000000">{</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #AF00DB">if</span><span style="color: #000000">(</span><span style="color: #001080">stepsCompleted</span><span style="color: #000000">.</span><span style="color: #795E26">isEmpty</span><span style="color: #000000">()){</span></span>
+<span class="line"><span style="color: #000000">            </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #A31515">"No previous steps"</span></span>
+<span class="line"><span style="color: #000000">        }</span><span style="color: #AF00DB">else</span><span style="color: #000000">{</span></span>
+<span class="line"><span style="color: #000000">            </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">stepsCompleted</span><span style="color: #000000">[</span><span style="color: #001080">stepsCompleted</span><span style="color: #000000">.</span><span style="color: #001080">size</span><span style="color: #000000">-</span><span style="color: #098658">1</span><span style="color: #000000">].</span><span style="color: #795E26">toString</span><span style="color: #000000">()</span></span>
+<span class="line"><span style="color: #000000">        }</span></span>
+<span class="line"><span style="color: #000000">    }</span></span>
+<span class="line"><span style="color: #000000">}</span></span></code></pre>
+<p>Action interface</p>
+<pre class="shiki light-plus" style="background-color: #FFFFFF"><code><span class="line"><span style="color: #AF00DB">open</span><span style="color: #000000"> </span><span style="color: #AF00DB">class</span><span style="color: #267F99"> Action</span><span style="color: #000000"> &#x3C;: </span><span style="color: #267F99">ToString</span><span style="color: #000000"> {</span></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #AF00DB">open</span><span style="color: #000000"> </span><span style="color: #AF00DB">func</span><span style="color: #795E26"> toString</span><span style="color: #000000">(): </span><span style="color: #267F99">String</span><span style="color: #000000">{</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #A31515">"blank"</span></span>
+<span class="line"><span style="color: #000000">    }</span></span>
+<span class="line"><span style="color: #000000">}</span></span></code></pre>
+<p>And example implementation of Action interface on class Click</p>
+<pre class="shiki light-plus" style="background-color: #FFFFFF"><code><span class="line"><span style="color: #AF00DB">class</span><span style="color: #267F99"> Click</span><span style="color: #000000">  &#x3C;: </span><span style="color: #267F99">Action</span></span>
+<span class="line"><span style="color: #000000">{</span></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #795E26">Click</span><span style="color: #000000">(</span><span style="color: #AF00DB">let</span><span style="color: #001080"> resultingUrl</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000">, </span><span style="color: #AF00DB">let</span><span style="color: #000000"> </span><span style="color: #267F99">itemClicked</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000">, </span><span style="color: #AF00DB">let</span><span style="color: #000000"> </span><span style="color: #267F99">inputText</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000">, </span><span style="color: #AF00DB">let</span><span style="color: #000000"> </span><span style="color: #267F99">result</span><span style="color: #000000">: </span><span style="color: #AF00DB">Bool</span><span style="color: #000000">){}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #AF00DB">func</span><span style="color: #795E26"> success</span><span style="color: #000000">(): </span><span style="color: #267F99">String</span><span style="color: #000000">{</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #AF00DB">var</span><span style="color: #001080"> formatted</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000"> = </span><span style="color: #A31515">"Clicked: </span><span style="color: #000000">${</span><span style="color: #001080">itemClicked</span><span style="color: #000000">}</span><span style="color: #A31515">"</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #AF00DB">if</span><span style="color: #000000">(!(</span><span style="color: #001080">inputText</span><span style="color: #000000">.</span><span style="color: #795E26">isEmpty</span><span style="color: #000000">())) { </span><span style="color: #001080">formatted</span><span style="color: #000000"> += </span><span style="color: #A31515">" and filled with text `</span><span style="color: #000000">${</span><span style="color: #001080">inputText</span><span style="color: #000000">}</span><span style="color: #A31515">`"</span><span style="color: #000000"> }</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #001080">formatted</span><span style="color: #000000"> += </span><span style="color: #A31515">". Resulting URL </span><span style="color: #000000">${</span><span style="color: #001080">resultingUrl</span><span style="color: #000000">}</span><span style="color: #A31515">."</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">formatted</span></span>
+<span class="line"><span style="color: #000000">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #AF00DB">func</span><span style="color: #795E26"> fail</span><span style="color: #000000">(): </span><span style="color: #267F99">String</span><span style="color: #000000">{</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #AF00DB">let</span><span style="color: #001080"> formatted</span><span style="color: #000000">: </span><span style="color: #267F99">String</span><span style="color: #000000"> = </span><span style="color: #A31515">"Failed To click and fill: </span><span style="color: #000000">${</span><span style="color: #001080">itemClicked</span><span style="color: #000000">}</span><span style="color: #A31515">, item is not a fillable field, attempted to fill with </span><span style="color: #000000">${</span><span style="color: #001080">inputText</span><span style="color: #000000">}</span><span style="color: #A31515">"</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">formatted</span></span>
+<span class="line"><span style="color: #000000">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #000000">    </span><span style="color: #AF00DB">public</span><span style="color: #000000"> </span><span style="color: #AF00DB">func</span><span style="color: #795E26"> toString</span><span style="color: #000000">(): </span><span style="color: #267F99">String</span><span style="color: #000000">{</span></span>
+<span class="line"><span style="color: #000000">        </span><span style="color: #AF00DB">if</span><span style="color: #000000">(</span><span style="color: #001080">result</span><span style="color: #000000">){</span></span>
+<span class="line"><span style="color: #000000">            </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #AF00DB">this</span><span style="color: #000000">.</span><span style="color: #795E26">success</span><span style="color: #000000">()</span></span>
+<span class="line"><span style="color: #000000">        }</span><span style="color: #AF00DB">else</span><span style="color: #000000">{</span></span>
+<span class="line"><span style="color: #000000">            </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #AF00DB">this</span><span style="color: #000000">.</span><span style="color: #795E26">fail</span><span style="color: #000000">()</span></span>
+<span class="line"><span style="color: #000000">        }</span></span>
+<span class="line"><span style="color: #000000">    }</span></span>
+<span class="line"><span style="color: #000000">}</span></span></code></pre>
+<h2 id="cangjie-magic-the-game-changer">Cangjie Magic: The Game Changer</h2>
+<p>This is where Cangjie Magic demonstrated its exceptional capabilities:</p>
+<p>Structured Response Control: Cangjie Magic enabled us to query agents
+and enforce JSON-formatted responses, allowing us to encode goal
+completion status as boolean values while capturing the agent's
+decision-making rationale.</p>
+<p>Tool Management: The framework provided granular control over which MCP
+server tools were available to each agent through Cangjie wrapper tools.
+This architectural pattern proved crucial for our memory system
+implementation.</p>
+<p>Memory Integration: By creating Cangjie Magic wrapper tools that
+mirrored our MCP server tools, we could update our memory class after
+every interaction, maintaining perfect state consistency.</p>
+<p>Terminal Actions: Perhaps most importantly, Cangjie Magic's ability to
+convert tools into terminal actions was revolutionary. This feature
+ensured that after each execution, the agent would exit the current
+request, enabling our incremental, memory-driven architecture to
+function correctly.</p>
+<h2 id="javascript-integration-powering-real-time-browser-interaction">JavaScript Integration: Powering Real-Time Browser Interaction</h2>
+<p>While the Cangjie Magic framework formed the architectural backbone of MagicExplorer, our JavaScript interaction layer provided the essential capabilities that made autonomous browser control possible.</p>
+<h3 id="what-the-javascript-does">What the JavaScript Does</h3>
+<p>Our JavaScript code acts as the <strong>hands and eyes</strong> of the AI agent in the browser. It allows us to:</p>
+<ul>
+<li>Inject JS into web pages for scraping DOM elements</li>
+<li>Click buttons, fill out forms, select from dropdowns</li>
+<li>Highlight elements (for the vision agent)</li>
+<li>Handle tabs and solve simple CAPTCHAs</li>
+</ul>
+<p>We built this system using <strong>Playwright</strong>, which allowed us to programmatically control and inject JavaScript into websites in a way that mimics user interaction.</p>
+<h3 id="architecture-mcp-server-and-tool-abstraction">Architecture: MCP Server and Tool Abstraction</h3>
+<p>The browser interaction logic is abstracted through an <strong>MCP (Model Context Protocol) server</strong>. The idea is simple but powerful: we expose JavaScript functions as "tools" with descriptive metadata. The AI agent doesn’t need to know how they work internally - it just receives a list of available tools, their descriptions, and how to call them.</p>
+<p>The AI sends a JSON request to the MCP server, specifying which tool to call and with what arguments. The server then triggers the correct JS function and returns the result, again as JSON. This modular abstraction allowed the backend and AI agent to evolve independently.</p>
+<h3 id="development-journey-from-monolith-to-modular">Development Journey: From Monolith to Modular</h3>
+<p>Initially, everything - scraping logic, Playwright control, and tool definitions - was lumped into a single file. As the project grew, this quickly became unmanageable.</p>
+<p>We evolved the structure into <strong>modular components</strong>, each encapsulating a specific capability. Here's what it looks like now:</p>
+<p>Each folder (e.g., <code>clickingTools</code>, <code>scrapingTools</code>, <code>visionTools</code>) contains logically grouped functionality. At the center is <code>browserManager.js</code>, which holds instances of all tool classes and binds tool names to function references for the MCP server.</p>
+<p>This architecture made the system:</p>
+<ul>
+<li>Easier to maintain</li>
+<li>Simpler to debug</li>
+<li>Straightforward to extend</li>
+</ul>
+<h3 id="scraping-the-balancing-act">Scraping: The Balancing Act</h3>
+<p>Scraping turned out to be the trickiest part. At first, we tried scraping <strong>everything</strong> on a page - but this overwhelmed the agent with irrelevant elements. So we narrowed the scope to just <strong>buttons, search bars, and links</strong>, giving the agent just enough to reason over.</p>
+<p>Later, we refined our approach to <strong>filter visible and semantically relevant elements</strong>, using CSS selectors and heuristics. We avoided generic <code>&#x3C;div></code> elements unless they had meaningful roles. This reduced noise and improved performance dramatically.</p>
+<h3 id="handling-the-real-web-tabs-captchas-and-failures">Handling the Real Web: Tabs, CAPTCHAs, and Failures</h3>
+<p>Web automation isn’t just about clicks - real websites introduce complications:</p>
+<ul>
+<li><strong>Tabs:</strong> Some buttons open links in new tabs. We had to handle tab switching explicitly using Playwright’s APIs.</li>
+<li><strong>CAPTCHAs:</strong> We integrated a CAPTCHA handler that detects image-based CAPTCHAs and sends them to our vision agent for decoding.</li>
+<li><strong>Iframes:</strong> These remain a limitation. Our JS injection architecture cannot reach into cross-origin iframes, so websites like Google Docs don’t work.</li>
+</ul>
+<p>Whenever an action fails - whether due to a missing element or an unexpected structure - we catch the error and return it to the agent. This allows it to <strong>replan or retry</strong> intelligently.</p>
+<h3 id="simplicity-over-realism">Simplicity Over Realism</h3>
+<p>Unlike some automation platforms, we didn’t aim to mimic human behavior (like mouse movements or slow typing). Instead, we focused on <strong>functional control</strong>, simulating clicks and inputs directly using Playwright.</p>
+<h3 id="what-were-proud-of">What We're Proud Of</h3>
+<p>One of the most satisfying outcomes was making <strong>scraping actually useful</strong>. Initially, we feared the agent would always be flooded with junk. But by iterating on our selectors and filtering logic, we achieved highly accurate, semantically meaningful extractions.</p>
+<p>Another highlight was the CAPTCHA solver integration and our ability to handle real-world browsing tasks like account registration, email verification, and even file uploads - all programmatically.</p>
+<h3 id="reflections">Reflections</h3>
+<p>If we could go back, we’d start with this modular architecture from day one. But hindsight is 20/20. We learned a lot from evolving the system organically, identifying pain points, and improving based on real use cases.</p>
+<p>Right now, our biggest areas for future improvement include:</p>
+<ul>
+<li>Better support for scrolling and lazy-loaded content</li>
+<li>Handling cross-origin iframes</li>
+</ul>
+<h3 id="final-thoughts">Final Thoughts</h3>
+<p>Our JavaScript layer abstracts complex browser interactions into simple, AI-callable tools. The result is a powerful agent that can interpret a goal, plan steps, and take real actions inside the browser - all thanks to a robust and well-designed JavaScript interaction layer.</p>
+<h2 id="advanced-features-and-hybrid-intelligence">Advanced Features and Hybrid Intelligence</h2>
+<p>Our final system incorporated sophisticated capabilities:</p>
+<ul>
+<li>File Upload Support: Seamless handling of file uploads across different
+websites</li>
+<li>Tab Management: Dynamic tab switching and spawning of new
+browser instances</li>
+<li>Subtask Delegation: Agents could create specialized
+instances for specific subgoals (particularly valuable for handling
+confirmation codes during authentication flows)</li>
+</ul>
+<h2 id="vision-agent-integration">Vision Agent Integration</h2>
+<p>We repurposed our earlier vision system as an intelligent fallback
+mechanism. When semantic information from scraped elements proves
+insufficient, the executor can consult the vision agent for guidance.
+This hybrid approach provides several advantages:</p>
+<p>Dense Information Processing: The vision system can process more
+comprehensive webpage information without token limitations</p>
+<p>Element Discovery: Ability to interact with elements that were filtered
+out during optimization</p>
+<p>Adaptability: Enhanced performance on poorly designed websites without
+sacrificing efficiency on standard sites</p>
+<h2 id="results-and-impact">Results and Impact</h2>
+<p>MagicExplorer successfully demonstrates autonomous web navigation across
+a diverse range of tasks. The system can handle complex workflows
+including:</p>
+<ul>
+<li>
+<p>Multi-step authentication processes</p>
+</li>
+<li>
+<p>Form submissions and file uploads</p>
+</li>
+<li>
+<p>Cross-tab navigation and coordination</p>
+</li>
+<li>
+<p>Dynamic content interaction</p>
+</li>
+<li>
+<p>Goal verification and completion confirmation</p>
+</li>
+</ul>
+<h2 id="lessons-learned">Lessons Learned</h2>
+<p>This project reinforced several key principles:</p>
+<ul>
+<li>
+<p>Simplicity Over Complexity: Our most successful architecture was
+ultimately the simplest, enhanced with sophisticated state management</p>
+</li>
+<li>
+<p>Framework Integration: Cangjie Magic's capabilities were essential to
+our success, providing the precise control needed for complex agent
+orchestration</p>
+</li>
+<li>
+<p>Iterative Design: Each architectural iteration taught us valuable
+lessons that informed our final solution</p>
+</li>
+<li>
+<p>Hybrid Intelligence: Combining different AI approaches (semantic and
+visual) created a more robust and adaptable system</p>
+</li>
+</ul>
+<h2 id="future-directions">Future Directions</h2>
+<p>While MagicEplorer successfully completes a wide variety of tasks, we
+acknowledge that certain web pages and interaction patterns remain
+challenging. Our extensible architecture provides a solid foundation for
+continuous improvement through:</p>
+<ul>
+<li>
+<p>Enhanced tool integration</p>
+</li>
+<li>
+<p>Improved error handling and recovery</p>
+</li>
+<li>
+<p>Advanced visual processing capabilities</p>
+</li>
+<li>
+<p>Broader website compatibility testing</p>
+</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>This project has shown that building successful AI agents demands more than just powerful models - it also requires robust frameworks that enable precise control and seamless integration.</p>
+<p>Our evolution from an initial FFI-based prototype to a hybrid architecture highlights the value of iterative development, architectural adaptability, and a strong tooling foundation. As we continue to enhance MagicExplorer's capabilities, we're excited by the opportunities that lie ahead.</p>
