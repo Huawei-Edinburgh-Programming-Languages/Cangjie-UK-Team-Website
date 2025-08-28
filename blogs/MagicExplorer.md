@@ -1,5 +1,4 @@
-# MagicExplorer: An Automated Browser Agent System with Cangjie
-Magic Framework
+# MagicExplorer: An Automated Browser Agent System with Cangjie Magic Framework
 
 As interns at Huawei, we embarked on an ambitious journey to create
 MagicExplorer, an intelligent automated browser agent system that could
@@ -100,7 +99,7 @@ public class MemoryManager <: ToString
     var manualMemory:  String
     var end: Int64
 
-        public MemoryManager(){
+    public MemoryManager(){
         stepsCompleted = ArrayList<Action>([])
         manualMemory = ""
         end = 0
