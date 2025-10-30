@@ -46,7 +46,7 @@ class BlogWebsite
     {
         const projectNameElement = document.getElementById("project-name") ;
         const temp = this.projectName.replace(/_/g," ") ;
-        projectNameElement.textContent = `Welcome to ${temp}!` ;
+        projectNameElement.textContent = `${temp}` ;
     }
 
     loadRepoLink()
@@ -75,7 +75,11 @@ class BlogWebsite
     {
         const goBackButton = document.getElementById("go-back-button") ;
         goBackButton.addEventListener("click", () => {
-            window.location.href = "index.html" ;
+            if (window.history.length > 1) {
+                window.history.back()
+            } else {
+                window.location.href = "index.html"
+            }
         })
     }
 
@@ -107,6 +111,33 @@ class BlogWebsite
         }
         const tocHTML = Utils.buildNestedListTOC(headers) ;
         tocElement.innerHTML = `<nav class="toc">${tocHTML}</nav>`;
+
+        this.enableScrollSpy(headers)
+    }
+
+    enableScrollSpy(headers)
+    {
+        const linkById = new Map()
+        for (const h of headers) {
+            const link = document.querySelector(`.toc a[href="#${h.id}"]`)
+            if (link) linkById.set(h.id, link)
+        }
+        const observer = new IntersectionObserver((entries) => {
+            for (const e of entries) {
+                if (e.isIntersecting) {
+                    const id = e.target.getAttribute('id')
+                    const link = linkById.get(id)
+                    if (!link) continue
+                    document.querySelectorAll('.toc-link.active').forEach(el => el.classList.remove('active'))
+                    link.classList.add('active')
+                }
+            }
+        }, { root: document.querySelector('#blog-content'), rootMargin: '0px 0px -60% 0px', threshold: 0.1 })
+
+        // Observe headings in the rendered blog content
+        const container = document.getElementById('blog-content')
+        const headings = container.querySelectorAll('h1[id], h2[id], h3[id]')
+        headings.forEach(h => observer.observe(h))
     }
 }
 

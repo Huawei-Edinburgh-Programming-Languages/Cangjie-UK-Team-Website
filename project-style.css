@@ -28,6 +28,8 @@ body {
   flex-direction: column;
 }
 
+html { scroll-behavior: smooth; }
+
 header {
   background: #20b2aa;
   color: white;
@@ -151,6 +153,11 @@ main {
   background: #f7fafc;
 }
 
+.toc-link.active {
+  color: #20b2aa;
+  font-weight: 700;
+}
+
 .toc-level-1 {
   font-weight: 600;
   font-size: 1rem; 
@@ -209,6 +216,11 @@ footer {
   margin: 1.5rem 0 1rem;
   scroll-margin-top: 2rem;
   color: #2d3748;
+}
+
+#blog-content :target {
+  outline: 2px solid #20b2aa;
+  outline-offset: 4px;
 }
 
 /* Specific overrides */

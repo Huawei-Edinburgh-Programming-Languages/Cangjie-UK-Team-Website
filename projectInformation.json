@@ -3,6 +3,8 @@
     "name": "MagicExplorer",
     "repoLink": "https://gitcode.com/Cangjie-TPC/MagicExplorer",
     "authors": ["Maksymilian Sieklinski", "Isaac Lee"],
-    "date": "20/08/2020"
+    "date": "20/08/2020",
+    "description": "An automated browser agent system built with the Cangjie Magic framework, integrating Playwright via MCP for real-world web automation.",
+    "tags": ["Automation", "Agents", "Playwright", "Cangjie"]
   }
 ]
