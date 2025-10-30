@@ -6,6 +6,15 @@ let allProjects = []
 let showingAll = false
 const INITIAL_DISPLAY_COUNT = 6
 
+function formatDateForDisplay(dmy)
+{
+    // Expecting DD/MM/YYYY
+    const [d, m, y] = dmy.split("/")
+    const date = new Date(Number(y), Number(m) - 1, Number(d))
+    const fmt = new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'short', day: '2-digit' })
+    return fmt.format(date)
+}
+
 async function loadProjects() 
 {
     const response = await fetch("projectInformation.json")
@@ -19,14 +28,14 @@ function displaySingleProject(project, projectsContainer)
     const projectCard = document.createElement("div")
     projectCard.className = "project-card"
 
-    // Create authors string
-    const authorsText =
-    project.authors.length > 1 ? `Authors: ${project.authors.join(", ")}` : `Author: ${project.authors[0]}`
+    const tags = Array.isArray(project.tags) ? project.tags : []
+    const description = project.description || ""
+    // authors/date intentionally omitted per design
 
     projectCard.innerHTML = `
     <h3>${project.name}</h3>
-    <p>${authorsText}</p>
-    <p class="project-date">Updated: ${project.date}</p>
+    ${description ? `<p class="project-summary">${description}</p>` : ""}
+    ${tags.length ? `<div class="project-tags">${tags.map(t => `<span class="tag">${t}</span>`).join(" ")}</div>` : ""}
     <a href="projectTemplate.html?id=${allProjectsRaw.indexOf(project)}" class="project-link">View Project →</a>
     `
     projectsContainer.appendChild(projectCard)
